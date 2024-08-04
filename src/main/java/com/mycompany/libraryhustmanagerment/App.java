@@ -21,6 +21,7 @@ public class App extends Application {
         Parent root = loadFXML("FXMLDocument");
 //        Parent root = loadFXML("dashboard");
         scene = new Scene(root);
+        //assdsa
 
         stage.initStyle(StageStyle.TRANSPARENT);
 
