@@ -30,6 +30,9 @@ import models.Account;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
+    private AnchorPane rootPane;
+
+    @FXML
     private AnchorPane signIn_form;
 
     @FXML
@@ -83,12 +86,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label title;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        title.setText("Edit your information");
-        // Set default visibility
+        title.setText("SIGN UP");
         signIn_form.setVisible(true);
         signup_form.setVisible(false);
+        setupWindowDragging();
     }
 
     @FXML
@@ -96,9 +102,11 @@ public class FXMLDocumentController implements Initializable {
         if (event.getSource() == signin_hyperlink) {
             signIn_form.setVisible(false);
             signup_form.setVisible(true);
+            clearSignUpField();
         } else if (event.getSource() == signup_hyperlink) {
             signIn_form.setVisible(true);
             signup_form.setVisible(false);
+            clearSignInField();
         }
     }
 
@@ -128,11 +136,30 @@ public class FXMLDocumentController implements Initializable {
     private double x = 0;
     private double y = 0;
 
-    private void switchToDashBoard() throws IOException {
-        signinbtn.getScene().getWindow().hide();
-        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
+    private void setupWindowDragging() {
+        rootPane.setOnMousePressed((MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        rootPane.setOnMouseDragged((MouseEvent event) -> {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
+    }
+
+    private void switchToDashBoard(Account userLogin) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
+        Parent root = loader.load();
+
+        FXMLDashBoardConstroller dashboardController = loader.getController();
+
+        dashboardController.DisplayAccountIdRoleAndName(userLogin);
+
         Stage stage = new Stage();
         Scene scene = new Scene(root);
+
         root.setOnMousePressed((MouseEvent event) -> {
             x = event.getSceneX();
             y = event.getSceneY();
@@ -141,16 +168,18 @@ public class FXMLDocumentController implements Initializable {
         root.setOnMouseDragged((MouseEvent event) -> {
             stage.setX(event.getScreenX() - x);
             stage.setY(event.getScreenY() - y);
-            stage.setOpacity(0.8);
+            // stage.setOpacity(0.8);
         });
 
-        root.setOnMouseReleased((MouseEvent event) -> {
-            stage.setOpacity(1);
-        });
+        // root.setOnMouseReleased((MouseEvent event) -> {
+        // stage.setOpacity(1);
+        // });
 
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.show();
+
+        signinbtn.getScene().getWindow().hide();
     }
 
     private void errorLogin() {
@@ -181,7 +210,7 @@ public class FXMLDocumentController implements Initializable {
             }
         } catch (NumberFormatException ex) {
             showAlert("Error!", "Cannot Register!",
-                    "Account ID must be a number, please try again!");
+                    "Account ID must be HUST ID, please try again!");
         }
     }
 
@@ -199,8 +228,8 @@ public class FXMLDocumentController implements Initializable {
 
         if (userLogin != null && userLogin.GetPassword().equals(passwordText)) {
             showAlert("Successfully!", "Log In Successfully!",
-                    "Account " + userLogin.GetAccountId() + " is logged in!");
-            switchToDashBoard();
+                    "Account " + userLogin.GetAccountId() + " has been logged in!");
+            switchToDashBoard(userLogin);
         } else {
             errorLogin();
         }
@@ -208,13 +237,13 @@ public class FXMLDocumentController implements Initializable {
 
     private void handleSignUp() {
         String name = signup_name.getText();
-        String phone = signup_phoneNumber.getText();
+        String phoneNumber = signup_phoneNumber.getText();
         String emailAddress = signup_emailAddress.getText();
         String accountIdText = signup_accountId.getText();
         String password = signup_password.getText();
 
         if (accountIdText.isEmpty() || !accountIdText.matches("\\d+")) {
-            showAlert("Error!", "Invalid Account ID!", "Account ID must be a number, please try again!");
+            showAlert("Error!", "Invalid Account ID!", "Account ID must be HUST ID, please try again!");
             return;
         }
 
@@ -226,7 +255,7 @@ public class FXMLDocumentController implements Initializable {
             return;
         }
 
-        if (!Account.validatePhoneNumber(phone)) {
+        if (!Account.validatePhoneNumber(phoneNumber)) {
             showAlert("Error!", "Invalid Phone Number!",
                     "Phone number must be 10 digits long, starting with 0 and followed by 9 digits (e.g., 0912345678), please try again!");
             return;
@@ -249,17 +278,30 @@ public class FXMLDocumentController implements Initializable {
             return;
         }
 
-        Account account = new Account(accountId, name, emailAddress, phone, password, "Student");
+        Account account = new Account(accountId, name, emailAddress, phoneNumber, password, "Student");
 
         try {
-            AccountEntity.insert(account);
+            AccountEntity.InsertAccount(account);
             signIn_form.setVisible(true);
             signup_form.setVisible(false);
             showAlert("Successfully!", "Registration Successful!",
-                    "Account " + account.GetAccountId() + " is registered!");
+                    "Account " + account.GetAccountId() + " has been registered!");
+            clearSignUpField();
         } catch (DuplicateEntryException e) {
             showAlert("Error!", "Cannot Register!", e.getMessage());
         }
     }
 
+    private void clearSignInField() {
+        signin_accountId.clear();
+        signin_password.clear();
+    }
+
+    private void clearSignUpField() {
+        signup_accountId.clear();
+        signup_name.clear();
+        signup_phoneNumber.clear();
+        signup_emailAddress.clear();
+        signup_password.clear();
+    }
 }

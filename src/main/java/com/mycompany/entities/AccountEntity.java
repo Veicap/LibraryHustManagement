@@ -6,11 +6,16 @@ package com.mycompany.entities;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.mycompany.libraryhustmanagerment.DuplicateEntryException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.Account;
 
 /**
@@ -19,7 +24,7 @@ import models.Account;
  */
 
 public class AccountEntity extends BaseEntity {
-    public static void insert(Account newAccount) throws DuplicateEntryException {
+    public static void InsertAccount(Account newAccount) throws DuplicateEntryException {
         open();
 
         try {
@@ -63,39 +68,43 @@ public class AccountEntity extends BaseEntity {
         }
     }
 
-    public static void update(Account updateAccount) {
+    public static void UpdateAccount(Account updateAccount) throws SQLException {
         open();
 
+        String sql = "UPDATE Account SET name = ?, emailAddress = ?, phoneNumber = ?, password = ? WHERE accountId = ?";
+
         try {
-            String sql = "UPDATE Account SET name = ?, emailAddress = ?, phoneNumber = ?, password = ? WHERE accountId = ?";
             statement = conn.prepareStatement(sql);
 
             statement.setString(1, updateAccount.GetName());
             statement.setString(2, updateAccount.GetEmailAddress());
-            statement.setString(4, updateAccount.GetPhoneNumber());
-            statement.setString(5, updateAccount.GetPassword());
-            statement.setInt(6, updateAccount.GetAccountId());
+            statement.setString(3, updateAccount.GetPhoneNumber());
+            statement.setString(4, updateAccount.GetPassword());
+            statement.setInt(5, updateAccount.GetAccountId());
 
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountEntity.class.getName()).log(Level.SEVERE, null, ex);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                Logger.getLogger(AccountEntity.class.getName()).log(Level.WARNING,
+                        "No account found with id: " + updateAccount.GetAccountId());
+            }
         } finally {
             close();
         }
     }
 
-    public static void delete(Integer accountId) {
+    public static void DeleteAccount(Integer accountId) throws SQLException {
         open();
 
         String sql = "DELETE FROM Account WHERE accountId = ?";
 
         try {
             statement = conn.prepareStatement(sql);
-
             statement.setInt(1, accountId);
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountEntity.class.getName()).log(Level.SEVERE, null, ex);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                Logger.getLogger(AccountEntity.class.getName()).log(Level.WARNING,
+                        "No account found with id: " + accountId);
+            }
         } finally {
             close();
         }
@@ -129,5 +138,59 @@ public class AccountEntity extends BaseEntity {
         }
 
         return account;
+    }
+
+    public static List<Account> ShowAllAccounts() {
+        List<Account> accounts = new ArrayList<>();
+        open();
+
+        String sql = "SELECT * FROM Account";
+        try {
+            statement = conn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Integer accountId = rs.getInt("accountId");
+                String name = rs.getString("name");
+                String emailAddress = rs.getString("emailAddress");
+                String phoneNumber = rs.getString("phoneNumber");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
+
+                Account account = new Account(accountId, name, emailAddress, phoneNumber, password, role);
+                accounts.add(account);
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(AccountEntity.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            close();
+        }
+
+        return accounts;
+    }
+
+    // Fetch all accounts
+    public static ObservableList<Account> GetAllAccounts() throws SQLException {
+        ObservableList<Account> accounts = FXCollections.observableArrayList();
+        open();
+        try {
+            String sql = "SELECT * FROM Account";
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                Account account = new Account(
+                        resultSet.getInt("accountId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("emailAddress"),
+                        resultSet.getString("phoneNumber"),
+                        resultSet.getString("password"),
+                        resultSet.getString("role"));
+                accounts.add(account);
+            }
+        } finally {
+            close();
+        }
+        return accounts;
     }
 }

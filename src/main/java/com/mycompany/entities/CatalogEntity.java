@@ -4,10 +4,6 @@
  */
 package com.mycompany.entities;
 
-import static com.mycompany.entities.BaseEntity.close;
-import static com.mycompany.entities.BaseEntity.conn;
-import static com.mycompany.entities.BaseEntity.open;
-import static com.mycompany.entities.BaseEntity.statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Legion
@@ -29,13 +26,13 @@ public class CatalogEntity extends BaseEntity {
             String sql = "Select title From catalog";
             statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String title = rs.getString("title");
                 catalogTitles.add(title);
             }
             Set<String> uniqueTitles = new HashSet<>(catalogTitles);
             uniqueBookTitles = new ArrayList<>(uniqueTitles);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CatalogEntity.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -43,6 +40,7 @@ public class CatalogEntity extends BaseEntity {
         }
         return uniqueBookTitles;
     }
+
     public static List<String> GetGenreList() {
         List<String> catalogGenre = new ArrayList<>();
         List<String> uniqueBookGenre = null;
@@ -51,13 +49,13 @@ public class CatalogEntity extends BaseEntity {
             String sql = "Select genre From catalog";
             statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String genre = rs.getString("genre");
                 catalogGenre.add(genre);
             }
             Set<String> uniqueGenres = new HashSet<>(catalogGenre);
             uniqueBookGenre = new ArrayList<>(uniqueGenres);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CatalogEntity.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -65,6 +63,7 @@ public class CatalogEntity extends BaseEntity {
         }
         return uniqueBookGenre;
     }
+
     public static List<String> GetAuhorList() {
         List<String> catalogAuthor = new ArrayList<>();
         List<String> uniqueBookAuthor = null;
@@ -73,13 +72,13 @@ public class CatalogEntity extends BaseEntity {
             String sql = "Select author From catalog";
             statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String author = rs.getString("author");
                 catalogAuthor.add(author);
             }
             Set<String> uniqueAuthor = new HashSet<>(catalogAuthor);
             uniqueBookAuthor = new ArrayList<>(uniqueAuthor);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CatalogEntity.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

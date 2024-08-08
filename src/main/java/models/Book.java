@@ -4,7 +4,6 @@
  */
 package models;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -13,7 +12,6 @@ import java.util.Date;
  */
 public class Book {
 
-    
     private String bookTitle;
     private String genre;
     private String bookAuthor;
@@ -22,9 +20,10 @@ public class Book {
     private String publisher;
     private Date publicationDate;
     private Integer bookID;
-    
+
     // Constructor for creat book
-    public Book(String bookTitle, String genre, String bookAuthor, Integer totalBook, Integer availBook, String publisher, Date publicationDate) {
+    public Book(String bookTitle, String genre, String bookAuthor, Integer totalBook, Integer availBook,
+            String publisher, Date publicationDate) {
         this.bookTitle = bookTitle;
         this.genre = genre;
         this.bookAuthor = bookAuthor;
@@ -33,7 +32,9 @@ public class Book {
         this.publisher = publisher;
         this.publicationDate = publicationDate;
     }
-    public Book(String bookTitle, String genre, String bookAuthor, Integer totalBook, String publisher, Date publicationDate) {
+
+    public Book(String bookTitle, String genre, String bookAuthor, Integer totalBook, String publisher,
+            Date publicationDate) {
         this.bookTitle = bookTitle;
         this.genre = genre;
         this.bookAuthor = bookAuthor;
@@ -41,16 +42,20 @@ public class Book {
         this.publisher = publisher;
         this.publicationDate = publicationDate;
     }
+
     public Book() {
-        
+
     }
+
     // SetBookId
     public Integer getBookID() {
         return bookID;
     }
+
     public void setBookID(Integer bookID) {
         this.bookID = bookID;
     }
+
     /**
      * @return the bookTitle
      */
@@ -64,15 +69,17 @@ public class Book {
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
     }
-    
+
     // Get Genre
     public String getGenre() {
         return genre;
     }
+
     // Set Genre
     public void setGenre(String genre) {
         this.genre = genre;
     }
+
     /**
      * @return the bookAuthor
      */
@@ -142,13 +149,14 @@ public class Book {
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
     }
+
     // Check stock have to be integer
     public static Boolean IsValidStock(String stock) {
-        if(stock == null || stock.isEmpty()) {
+        if (stock == null || stock.isEmpty()) {
             return false;
         }
-        for(char c : stock.toCharArray()) {
-            if(!Character.isDigit(c)) {
+        for (char c : stock.toCharArray()) {
+            if (!Character.isDigit(c)) {
                 return false;
             }
         }

@@ -115,17 +115,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-border-width: 1.8px;
 }
 .add-btn {
-    -fx-background-color: #446093;
-    -fx-background-radius: 8px; 
-    -fx-cursor: hand;
-    -fx-text-fill: #fff;
-    -fx-font-size:14px;
-    -fx-font-family : "Arial";
-}
-.add-btn:hover {
-    -fx-background-color: #5981c5;
-}
-.update-btn {
     -fx-background-color: #41916f;
     -fx-background-radius: 8px; 
     -fx-cursor: hand;
@@ -133,8 +122,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-font-size:14px;
     -fx-font-family : "Arial";
 }
+.add-btn:hover {
+    -fx-background-color: #5ba68a;
+}
+.update-btn {
+    -fx-background-color: #446093;
+    -fx-background-radius: 8px; 
+    -fx-cursor: hand;
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+    -fx-font-family : "Arial";
+}
 .update-btn:hover {
-    -fx-background-color: #67a98c;
+    -fx-background-color: #5d78b0;
 }
 .reset-btn {
     -fx-background-color: #96a440;
@@ -242,29 +242,34 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 
 .combo-box {
-    -fx-background-color: #FFFFFF; /* Màu nền của ComboBox */
-    -fx-text-fill: #333333; /* Màu chữ */
-    -fx-font-size: 12px; /* Kích thước chữ */
-    -fx-padding: 5px; /* Khoảng cách bên trong ComboBox */
-    -fx-border-color: #CCCCCC; /* Màu viền */
-    -fx-border-width: 1px; /* Độ dày viền */
-    -fx-border-radius: 5px; /* Bo góc viền */
-    -fx-background-radius: 5px; /* Bo góc nền */
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #333333;
+    -fx-font-size: 12px;
+    -fx-padding: 5px;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
 }
 
 .combo-box .combo-box-popup {
-    -fx-background-color: #FFFFFF; /* Màu nền của danh sách thả xuống */
-    -fx-border-color: #CCCCCC; /* Màu viền của danh sách thả xuống */
-    -fx-border-width: 1px; /* Độ dày viền của danh sách thả xuống */
-    -fx-border-radius: 5px; /* Bo góc viền của danh sách thả xuống */
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
 }
 
 .combo-box .combo-box-cell {
-    -fx-background-color: #FFFFFF; /* Màu nền của từng mục trong danh sách thả xuống */
-    -fx-text-fill: #333333; /* Màu chữ của từng mục */
-    -fx-padding: 5px; /* Khoảng cách bên trong từng mục */
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px;
 }
 
 .combo-box .combo-box-cell:hover {
-    -fx-background-color: #388E3C; /* Màu nền khi hover */
+    -fx-background-color: #388E3C;
+}
+
+.custom-style {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333;
 }
