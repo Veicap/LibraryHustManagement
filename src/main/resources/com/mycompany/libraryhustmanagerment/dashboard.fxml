@@ -232,6 +232,12 @@
                                     <ComboBox fx:id="managerBook_authorsCombobox" layoutX="312.0" layoutY="31.0" prefHeight="42.0" prefWidth="125.0" promptText="Authors" />
                                  </children>
                               </AnchorPane>
+                              <TextField fx:id="managerBook_studentID" layoutX="359.0" layoutY="500.0" prefHeight="35.0" prefWidth="140.0" styleClass="textField" stylesheets="@designDashboard.css" />
+                              <Label layoutX="273.0" layoutY="508.0" prefHeight="18.0" prefWidth="86.0" text="Student ID:">
+                                 <font>
+                                    <Font name="Tahoma" size="14.0" />
+                                 </font>
+                              </Label>
                            </children></AnchorPane>
                      </children>
                   </AnchorPane>
