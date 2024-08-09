@@ -153,10 +153,10 @@ public class FXMLDocumentController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
         Parent root = loader.load();
 
-        FXMLDashBoardConstroller dashboardController = loader.getController();
+        FXMLDashBoardController dashboardController = loader.getController();
 
         dashboardController.DisplayAccountIdRoleAndName(userLogin);
-
+        dashboardController.initializeDataByStudent();
         Stage stage = new Stage();
         Scene scene = new Scene(root);
 
@@ -180,6 +180,7 @@ public class FXMLDocumentController implements Initializable {
         stage.show();
 
         signinbtn.getScene().getWindow().hide();
+        
     }
 
     private void errorLogin() {
@@ -198,8 +199,14 @@ public class FXMLDocumentController implements Initializable {
         alert.showAndWait();
     }
 
-    Account userLogin = null;
-
+    private Account userLogin = null;
+    private static Account accountLogin = null;
+    public static void SetAccountLogin(Account userLogin) {
+        accountLogin = userLogin;
+    }
+    public static Account GetAccountLogin() {
+        return accountLogin;
+    }
     @FXML
     private void signIn_and_signUp() throws IOException {
         try {
@@ -213,7 +220,7 @@ public class FXMLDocumentController implements Initializable {
                     "Account ID must be HUST ID, please try again!");
         }
     }
-
+    
     private void handleSignIn() throws IOException {
         String accountIdText = signin_accountId.getText();
         String passwordText = signin_password.getText();
@@ -229,12 +236,15 @@ public class FXMLDocumentController implements Initializable {
         if (userLogin != null && userLogin.GetPassword().equals(passwordText)) {
             showAlert("Successfully!", "Log In Successfully!",
                     "Account " + userLogin.GetAccountId() + " has been logged in!");
+            SetAccountLogin(userLogin);
             switchToDashBoard(userLogin);
+            
         } else {
             errorLogin();
         }
+        
     }
-
+    
     private void handleSignUp() {
         String name = signup_name.getText();
         String phoneNumber = signup_phoneNumber.getText();

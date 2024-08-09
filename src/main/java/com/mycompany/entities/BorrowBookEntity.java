@@ -9,6 +9,7 @@ import static com.mycompany.entities.BaseEntity.conn;
 import static com.mycompany.entities.BaseEntity.open;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -76,7 +77,40 @@ public class BorrowBookEntity extends BaseEntity {
         ObservableList<BorrowBook> borrowBookDataList = FXCollections.observableList(borrowBookList);
         return borrowBookDataList;
     }
+    
+    public static ObservableList<BorrowBook> GetDataBorrowBooksByStudentID(Integer studentID) throws SQLException {
+    open();  // Ensure this method properly initializes the connection
+    List<BorrowBook> borrowBookList = new Vector<>();
+    String sql = "SELECT * FROM bookborrow WHERE accountID = ?";
+    try (PreparedStatement statement = conn.prepareStatement(sql)) {
+        statement.setInt(1, studentID);
+        try (ResultSet rs = statement.executeQuery()) {
+            while (rs.next()) {
+                BorrowBook borrowBook = new BorrowBook();
+                borrowBook.setBorrowID(rs.getInt("borrowID"));
+                borrowBook.setBookID(rs.getInt("bookID"));
+                borrowBook.setAccountID(rs.getInt("accountID"));
+                borrowBook.setBorrowDate(rs.getDate("borrowDate"));
+                borrowBook.setDueDate(rs.getDate("dueDate"));
+                borrowBook.setReturnDate(rs.getDate("returnDate"));
+                borrowBook.setTitle(rs.getString("title"));
+                borrowBookList.add(borrowBook);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, "Error executing query", e);
+            throw e;  // Rethrow exception if you need to handle it elsewhere
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, "Error preparing statement", e);
+        throw e;  // Rethrow exception if you need to handle it elsewhere
+    } finally {
+        // Consider closing the connection if it is not managed elsewhere
+        close();  // Ensure this method properly closes the connection
+    }
 
+    return FXCollections.observableList(borrowBookList);
+}
+    
     public static ObservableList<BorrowBook> GetDataBorrowSearch(Integer borrowID, Integer bookID, Integer accountID)
             throws SQLException {
         open();
@@ -163,6 +197,26 @@ public class BorrowBookEntity extends BaseEntity {
         }
         return uniqueBorrowID;
     }
+    public static List<String> getBorrowIDListByStudentID(Integer studentID) {
+        List<String> borrowID = new ArrayList<>();
+        List<String> uniqueBorrowID = null;
+        open();
+        try {
+            String sql = "SELECT borrowID FROM bookborrow WHERE accountID = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, studentID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Integer ID = rs.getInt("borrowID");
+                borrowID.add(Integer.toString(ID));
+            }
+            Set<String> uniqueID = new HashSet<>(borrowID);
+            uniqueBorrowID = new ArrayList<>(uniqueID);
+        } catch (Exception ex) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return uniqueBorrowID;
+    }
 
     public static List<String> getBookIDList() {
         List<String> bookID = new ArrayList<>();
@@ -183,7 +237,27 @@ public class BorrowBookEntity extends BaseEntity {
         }
         return uniqueBookID;
     }
-
+    
+    public static List<String> getBookIDListByStudentID(Integer studentID) {
+        List<String> borrowID = new ArrayList<>();
+        List<String> uniqueBorrowID = null;
+        open();
+        try {
+            String sql = "SELECT bookID FROM bookborrow WHERE accountID = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, studentID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Integer ID = rs.getInt("bookID");
+                borrowID.add(Integer.toString(ID));
+            }
+            Set<String> uniqueID = new HashSet<>(borrowID);
+            uniqueBorrowID = new ArrayList<>(uniqueID);
+        } catch (Exception ex) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return uniqueBorrowID;
+    }
     public static List<String> getAccountIDList() {
         List<String> accountID = new ArrayList<>();
         List<String> uniqueAccountID = null;
@@ -204,6 +278,28 @@ public class BorrowBookEntity extends BaseEntity {
         return uniqueAccountID;
     }
 
+    public static List<String> getAccountIDListByStudentID(Integer studentID) {
+        List<String> borrowID = new ArrayList<>();
+        List<String> uniqueBorrowID = null;
+        open();
+        try {
+            String sql = "SELECT accountID FROM bookborrow WHERE accountID = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, studentID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Integer ID = rs.getInt("accountID");
+                borrowID.add(Integer.toString(ID));
+            }
+            Set<String> uniqueID = new HashSet<>(borrowID);
+            uniqueBorrowID = new ArrayList<>(uniqueID);
+        } catch (Exception ex) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return uniqueBorrowID;
+    }
+    
+    
     public static void returnBook(BorrowBook book) {
         open();
         try {
