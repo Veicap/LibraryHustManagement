@@ -860,12 +860,15 @@ public class FXMLDashBoardController implements Initializable {
         }
 
         Account account = new Account(
-                Integer.parseInt(account_accountID.getText()),
+                Integer.valueOf(account_accountID.getText()),
                 account_name.getText(),
                 account_emailAddress.getText(),
                 account_phoneNumber.getText(),
                 account_password.getText());
-
+        if(BorrowBookEntity.IsStudentBorrowingBook(account.GetAccountId())) {
+            showAlert("Error", "Update Failed", "Account is being borrowed book.");
+            return;
+        }
         try {
             AccountEntity.UpdateAccount(account);
             showAlert("Success!", "Account Updated", "The account has been successfully updated.");
@@ -880,7 +883,10 @@ public class FXMLDashBoardController implements Initializable {
     @FXML
     private void HandleDeleteAccount() {
         int accountId = Integer.parseInt(account_accountID.getText());
-
+        if(BorrowBookEntity.IsStudentBorrowingBook(accountId)) {
+            showAlert("Error", "Delete Failed", "Account is being borrowed book.");
+            return;
+        }
         try {
             Account account = AccountEntity.GetDataAccountById(accountId);
 

@@ -58,9 +58,37 @@ public class BorrowBookEntity extends BaseEntity {
         ResultSet resultSet = null;
         try {
 
-            String query = "SELECT COUNT(*) FROM bookborrow WHERE bookID = ?";
+            String query = "SELECT COUNT(*) FROM bookborrow WHERE bookID = ? AND returnDate IS NULL";
             statement = conn.prepareStatement(query);
             statement.setInt(1, bookID);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đóng kết nối và tài nguyên
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return false;
+    }
+    public static boolean IsStudentBorrowingBook(Integer studentID) {
+        open();
+        ResultSet resultSet = null;
+        try {
+
+            String query = "SELECT COUNT(*) FROM bookborrow WHERE accountID = ? AND returnDate IS NULL";
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, studentID);
+           
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 int count = resultSet.getInt(1);
