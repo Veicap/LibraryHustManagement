@@ -26,6 +26,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 
+import java.io.IOException;
+
 import com.mycompany.entities.AccountEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -67,7 +69,7 @@ import models.BorrowBook;
  *
  * @author Legion
  */
-public class FXMLDashBoardConstroller implements Initializable {
+public class FXMLDashBoardController implements Initializable {
     @FXML
     private TableView<Account> account_accountTableView;
 
@@ -305,10 +307,6 @@ public class FXMLDashBoardConstroller implements Initializable {
     @FXML
     private TableView<Account> account_TableView;
 
-    
-    
-    
-    
     @FXML
     private void dasboard_form_close() {
         System.exit(0);
@@ -345,14 +343,46 @@ public class FXMLDashBoardConstroller implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
+    // accountLogin
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+//        try {
+//            SetValueMangagetBookAll();
+//            SetValueBorrowBookAll();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        SetValueForBookTitlesCatalog();
+//        SetValueForBookGenreCatalog();
+//        SetValueForBookAuthorCatalog();
+//        account_accountIdColumn.setCellValueFactory(
+//                cellData -> new SimpleIntegerProperty(cellData.getValue().GetAccountId()).asObject());
+//        account_nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetName()));
+//        account_emailAddressColumn
+//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetEmailAddress()));
+//        account_phoneNumberColumn
+//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetPhoneNumber()));
+//        account_passwordColumn
+//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetPassword()));
+//        account_roleColumn
+//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetRole()));
+//        ShowAllAccountsInTable();
+//        // UPdateCatalog borrowBook
+//        SetValueForBorrowIDSearch();
+//        SetValueForBookIDSearch();
+//        SetValueForAccountIDSearch();
+//        
+//        //accountLogin = FXMLDocumentController.GetAccountLogin();
+//        //System.out.println(accountLogin.GetRole());
+//       // System.out.println(userLogin.GetRole());
+    }
+    public void initializeDataByStudent() {
         try {
             SetValueMangagetBookAll();
             SetValueBorrowBookAll();
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
         SetValueForBookTitlesCatalog();
         SetValueForBookGenreCatalog();
@@ -447,7 +477,7 @@ public class FXMLDashBoardConstroller implements Initializable {
         try {
             SetValueMangagetBookAll();
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Update Catalog
         SetValueForBookTitlesCatalog();
@@ -547,6 +577,7 @@ public class FXMLDashBoardConstroller implements Initializable {
     void SetValueMangagetBookAll() throws SQLException {
         ObservableList<Book> bookDataList = BookEntity.GetDataBooks();
         setValueForManagerBookTableView(bookDataList);
+       // System.out.println(GetAccountLogin().GetRole());
     }
 
     private void setValueForManagerBookTableView(ObservableList<Book> bookDataList) {
@@ -629,7 +660,7 @@ public class FXMLDashBoardConstroller implements Initializable {
             } catch (NumberFormatException e) {
                 showAlert("Error", "Invalid Input", "Please enter valid numbers for stock.");
             } catch (SQLException ex) {
-                Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, "Database update error",
+                Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, "Database update error",
                         ex);
                 showAlert("Error", "Database Error", "Failed to update book in the database.");
             }
@@ -651,7 +682,7 @@ public class FXMLDashBoardConstroller implements Initializable {
             try {
                 SetValueMangagetBookAll();
             } catch (SQLException ex) {
-                Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -978,12 +1009,23 @@ public class FXMLDashBoardConstroller implements Initializable {
             isTextFieldLocked = false;
         }
     }
-
-
-    
-
+    // Initialize variable of borrow and return
+    // SelectBorrowBook
     private BorrowBook selectedBorrowBook = null;
-
+    private Account accountStudentLogin = null;
+    private Boolean AccountIsLogin() {
+        return FXMLDocumentController.GetAccountLogin() != null;
+    }
+    private Account GetAccountLogin() {
+        if(AccountIsLogin()) {
+            return FXMLDocumentController.GetAccountLogin();
+        } 
+        return null;
+    }
+    private Boolean IsStudent() {
+        accountStudentLogin = FXMLDocumentController.GetAccountLogin();
+        return AccountIsLogin() && GetAccountLogin().GetRole().equals("Student");
+    }
     @FXML
     private void SelectBorrowBook() {
         selectedBorrowBook = borrowedBooks_tableView.getSelectionModel().getSelectedItem();
@@ -993,13 +1035,25 @@ public class FXMLDashBoardConstroller implements Initializable {
         alert.setContentText("Book is selected: " + selectedBorrowBook.getTitle());
         alert.showAndWait();
         SetValueForUpdateForm();
-        System.out.print(selectedBorrowBook.getBookID());
+        System.out.println(selectedBorrowBook.getBookID());
+        
     }
-
+    
+    // Setvalue for tableview
     @FXML
     void SetValueBorrowBookAll() throws SQLException {
-        ObservableList<BorrowBook> borrowBookDataList = BorrowBookEntity.GetDataBorrowBooks();
-        setValueForBorrowBookTableView(borrowBookDataList);
+        if(IsStudent()) {
+            ObservableList<BorrowBook> borrowBookDataList = BorrowBookEntity.GetDataBorrowBooksByStudentID(accountStudentLogin.GetAccountId());
+            setValueForBorrowBookTableView(borrowBookDataList);
+            SetValueForAccountIDSearch();
+            SetValueForBookIDSearch();
+            SetValueForBorrowIDSearch();
+        }
+        else {
+            ObservableList<BorrowBook> borrowBookDataList = BorrowBookEntity.GetDataBorrowBooks();
+            setValueForBorrowBookTableView(borrowBookDataList);
+        }
+        
     }
 
     private void setValueForBorrowBookTableView(ObservableList<BorrowBook> borrowBookDataList) {
@@ -1013,20 +1067,41 @@ public class FXMLDashBoardConstroller implements Initializable {
         borrowedBooks_returnDateTable.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         borrowedBooks_tableView.setItems(borrowBookDataList);
     }
-
+    //Setvalue for borrowBook Combobox
     private void SetValueForBorrowIDSearch() {
-        List<String> borrowIDList = BorrowBookEntity.getBorrowIDList();
-        SetValueForComboBox(borrowedBooks_borrowIDSearch, borrowIDList, "Borrow ID");
+        if(IsStudent()) {
+            List<String> borrowIDList = BorrowBookEntity.getBorrowIDListByStudentID(accountStudentLogin.GetAccountId());
+            SetValueForComboBox(borrowedBooks_borrowIDSearch, borrowIDList, "Borrow ID");
+        }
+        else {
+            List<String> borrowIDList = BorrowBookEntity.getBorrowIDList();
+            SetValueForComboBox(borrowedBooks_borrowIDSearch, borrowIDList, "Borrow ID");
+        }
+        
     }
 
     private void SetValueForBookIDSearch() {
-        List<String> bookIDList = BorrowBookEntity.getBookIDList();
-        SetValueForComboBox(borrowedBooks_bookIDSearch, bookIDList, "Book ID");
+        if(IsStudent()) {
+            List<String> borrowIDList = BorrowBookEntity.getBookIDListByStudentID(accountStudentLogin.GetAccountId());
+            SetValueForComboBox(borrowedBooks_bookIDSearch, borrowIDList, "Book ID");
+        }
+        else {
+            List<String> bookIDList = BorrowBookEntity.getBookIDList();
+            SetValueForComboBox(borrowedBooks_bookIDSearch, bookIDList, "Book ID");
+        }
+        
     }
 
     private void SetValueForAccountIDSearch() {
-        List<String> accountIDList = BorrowBookEntity.getAccountIDList();
-        SetValueForComboBox(borrowedBooks_studentIDSearch, accountIDList, "Account ID");
+        if(IsStudent()) {
+            List<String> borrowIDList = BorrowBookEntity.getAccountIDListByStudentID(accountStudentLogin.GetAccountId());
+            SetValueForComboBox(borrowedBooks_studentIDSearch, borrowIDList, "Account ID");
+        }
+        else {
+            List<String> accountIDList = BorrowBookEntity.getAccountIDList();
+            SetValueForComboBox(borrowedBooks_studentIDSearch, accountIDList, "Account ID");
+        }
+        
     }
 
     @FXML
@@ -1059,6 +1134,7 @@ public class FXMLDashBoardConstroller implements Initializable {
            // return;
         }
         setValueForBorrowBookTableView(BorrowBookEntity.GetDataBorrowSearch(borrowID, bookID, accountID));
+        
     }
 
     @FXML
@@ -1117,7 +1193,7 @@ public class FXMLDashBoardConstroller implements Initializable {
                     SetValueMangagetBookAll();
                     SetValueBorrowBookAll();
                 } catch (SQLException ex) {
-                    Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -1149,7 +1225,7 @@ public class FXMLDashBoardConstroller implements Initializable {
                     SetValueMangagetBookAll();
                     SetValueBorrowBookAll();
                 } catch (SQLException ex) {
-                    Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

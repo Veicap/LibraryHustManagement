@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import models.Account;
 
 /**
  * JavaFX App
@@ -18,8 +19,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = loadFXML("dashboard");
-//        Parent root = loadFXML("dashboard");
+        Parent root =  loadFXML("FXMLDocument");
         scene = new Scene(root);
         //assdsa
 
@@ -27,8 +27,11 @@ public class App extends Application {
 
         stage.setScene(scene);
         stage.show();
+       // System.out.println(GetAccountLogin().GetRole());
     }
-
+    
+   
+    
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }

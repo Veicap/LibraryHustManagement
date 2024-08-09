@@ -1,8 +1,8 @@
+com\mycompany\libraryhustmanagerment\FXMLDashBoardController.class
 com\mycompany\entities\BookEntity.class
 com\mycompany\entities\CatalogEntity.class
 com\mycompany\libraryhustmanagerment\FXMLDocumentController.class
 models\BorrowBook.class
-com\mycompany\libraryhustmanagerment\FXMLDashBoardConstroller.class
 models\Book.class
 com\mycompany\entities\BorrowBookEntity.class
 module-info.class

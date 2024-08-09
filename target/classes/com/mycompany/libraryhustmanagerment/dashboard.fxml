@@ -15,7 +15,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="639.0" prefWidth="1148.0" styleClass="custom-style" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.libraryhustmanagerment.FXMLDashBoardConstroller">
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="639.0" prefWidth="1148.0" styleClass="custom-style" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.libraryhustmanagerment.FXMLDashBoardController">
    <children>
       <BorderPane layoutX="255.0" layoutY="100.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -45,7 +45,7 @@
             </AnchorPane>
          </top>
          <left>
-            <AnchorPane prefHeight="517.0" prefWidth="187.0" styleClass="nav-form" stylesheets="@designDashboard.css" BorderPane.alignment="CENTER">
+            <AnchorPane onMouseClicked="#SetValueBorrowBookAll" prefHeight="517.0" prefWidth="187.0" styleClass="nav-form" stylesheets="@designDashboard.css" BorderPane.alignment="CENTER">
                <children>
                   <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="63.0" layoutY="75.0" size="7em" />
                   <Label layoutX="56.0" layoutY="91.0" text="Welcome" textFill="WHITE">
@@ -68,7 +68,7 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="EDIT" />
                      </graphic>
                   </Button>
-                  <Button fx:id="accountBtn" layoutX="5.0" layoutY="375.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="51.0" prefWidth="182.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Accounts Management">
+                  <Button fx:id="accountBtn" layoutX="5.0" layoutY="375.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="61.0" prefWidth="182.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Accounts Management">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="USERS" />
                      </graphic>
@@ -99,7 +99,7 @@
          <center>
             <AnchorPane fx:id="dasboard_form" prefHeight="200.0" prefWidth="961.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="managerBook_form" layoutX="186.0" layoutY="79.0" prefHeight="544.0" prefWidth="900.8" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="managerBook_form" layoutX="186.0" layoutY="79.0" prefHeight="544.0" prefWidth="900.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane layoutX="5.0" prefHeight="574.0" prefWidth="257.0" styleClass="bg-white" stylesheets="@designDashboard.css">
                            <children>
@@ -178,7 +178,7 @@
                                  </textFill>
                               </Button>
                               <Button fx:id="managerBook_borrowBookBtn" layoutX="548.0" layoutY="509.0" mnemonicParsing="false" onAction="#BorrowBook" prefHeight="42.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Borrow Book" />
-                              <AnchorPane layoutX="6.0" maxHeight="82.0" maxWidth="654.0" minHeight="20.0" minWidth="600.0" prefHeight="74.0" prefWidth="654.0">
+                              <AnchorPane layoutX="5.0" maxHeight="82.0" maxWidth="690.0" minHeight="20.0" minWidth="600.0" prefHeight="74.0" prefWidth="690.0">
                                  <children>
                                     <Label layoutX="204.0" layoutY="2.0" prefHeight="24.0" prefWidth="63.0" text="Search" textFill="#9c1f1f">
                                        <font>
@@ -241,12 +241,12 @@
                      </children>
                   </AnchorPane>
 
-                  <AnchorPane fx:id="borrowedBooks_form" layoutX="4.0" prefHeight="544.0" prefWidth="900.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="borrowedBooks_form" layoutX="4.0" prefHeight="544.0" prefWidth="900.8" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
 
                      <children>
                         <AnchorPane layoutX="5.0" layoutY="1.0" prefHeight="572.0" prefWidth="947.0" styleClass="bg-white" stylesheets="@designDashboard.css">
                            <children>
-                              <TableView fx:id="borrowedBooks_tableView" layoutX="3.0" layoutY="77.0" prefHeight="406.0" prefWidth="944.0">
+                              <TableView fx:id="borrowedBooks_tableView" layoutX="3.0" layoutY="83.0" prefHeight="418.0" prefWidth="944.0">
                                 <columns>
                                   <TableColumn fx:id="borrowedBooks_bookTitleTable" prefWidth="126.39999008178711" text="Book Title" />
                                   <TableColumn fx:id="borrowedBooks_bookIDTable" prefWidth="90.39999389648438" text="Book ID" />
@@ -254,7 +254,7 @@
                                     <TableColumn fx:id="borrowedBooks_studentIDTable" prefWidth="137.5999755859375" text="Student ID" />
                                     <TableColumn fx:id="borrowedBooks_borrowDateTable" prefWidth="148.79998779296875" text="Borrow Date" />
                                     <TableColumn fx:id="borrowedBooks_dueDateTable" prefWidth="139.20001220703125" text="Due Date" />
-                                    <TableColumn fx:id="borrowedBooks_returnDateTable" prefWidth="210.0" text="Return Date" />
+                                    <TableColumn fx:id="borrowedBooks_returnDateTable" prefWidth="215.20001220703125" text="Return Date" />
                                 </columns>
                               </TableView>
                               <AnchorPane layoutX="15.0" layoutY="7.0" maxHeight="77.0" maxWidth="902.0" minHeight="50.0" minWidth="600.0" prefHeight="70.0" prefWidth="902.0">
@@ -264,10 +264,10 @@
                                           <Font name="Tahoma" size="18.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="borrowedBooks_bookIDSearch" layoutX="18.0" layoutY="24.0" prefHeight="38.0" prefWidth="118.0" promptText="Book ID" />
-                                    <ComboBox fx:id="borrowedBooks_borrowIDSearch" layoutX="152.0" layoutY="24.0" prefHeight="38.0" prefWidth="126.0" promptText="Borrow ID" />
-                                    <ComboBox fx:id="borrowedBooks_studentIDSearch" layoutX="294.0" layoutY="24.0" prefHeight="38.0" prefWidth="128.0" promptText="Student ID" />
-                                    <Button fx:id="borrowedBook_searchBtn" layoutX="438.0" layoutY="19.0" mnemonicParsing="false" onAction="#SetValueBorrowBookSearch" prefHeight="42.0" prefWidth="111.0" styleClass="add-btn" stylesheets="@designDashboard.css" text="Search">
+                                    <ComboBox fx:id="borrowedBooks_bookIDSearch" layoutX="58.0" layoutY="24.0" prefHeight="38.0" prefWidth="118.0" promptText="Book ID" />
+                                    <ComboBox fx:id="borrowedBooks_borrowIDSearch" layoutX="254.0" layoutY="24.0" prefHeight="38.0" prefWidth="110.0" promptText="Borrow ID" />
+                                    <ComboBox fx:id="borrowedBooks_studentIDSearch" layoutX="459.0" layoutY="24.0" prefHeight="38.0" prefWidth="114.0" promptText="Student ID" />
+                                    <Button fx:id="borrowedBook_searchBtn" layoutX="592.0" layoutY="19.0" mnemonicParsing="false" onAction="#SetValueBorrowBookSearch" prefHeight="42.0" prefWidth="111.0" styleClass="add-btn" stylesheets="@designDashboard.css" text="Search">
                                        <textFill>
                                           <LinearGradient endX="1.0" endY="1.0">
                                              <stops>
@@ -285,7 +285,22 @@
                                           </LinearGradient>
                                        </textFill>
                                     </Button>
-                                    <Button fx:id="borrowedBook_showBorrowedBookBtn" layoutX="566.0" layoutY="19.0" mnemonicParsing="false" onAction="#SetValueMangagetBookAll" prefHeight="42.0" prefWidth="162.0" styleClass="add-btn" stylesheets="@designDashboard.css" text="Show All Borrow Book" />
+                                    <Button fx:id="borrowedBook_showBorrowedBookBtn" layoutX="714.0" layoutY="19.0" mnemonicParsing="false" onAction="#SetValueBorrowBookAll" prefHeight="42.0" prefWidth="162.0" styleClass="add-btn" stylesheets="@designDashboard.css" text="Show All Borrow Book" />
+                                    <Label layoutX="-3.0" layoutY="33.0" text="BookID:" textFill="#130202">
+                                       <font>
+                                          <Font name="Tahoma" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="183.0" layoutY="34.0" text="BorrowID:" textFill="#1e0606">
+                                       <font>
+                                          <Font name="Tahoma" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="382.0" layoutY="33.0" text="StudentID:" textFill="#180505">
+                                       <font>
+                                          <Font name="Tahoma" size="14.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                               <Button fx:id="borrowedBook_returnBook" layoutX="486.0" layoutY="508.0" mnemonicParsing="false" onAction="#ReturnBook" prefHeight="42.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Return Book" />
