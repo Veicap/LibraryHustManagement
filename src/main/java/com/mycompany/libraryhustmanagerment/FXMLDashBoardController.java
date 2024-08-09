@@ -639,6 +639,12 @@ public class FXMLDashBoardController implements Initializable {
     @FXML
     private void UpdateBook() {
         if (selectedBook != null) {
+            if(BorrowBookEntity.IsExistedInBorrowBook(selectedBook.getBookID())) {
+                showAlert("Error", "Update Error", "Book are being borrowed ");
+                System.out.println("True");
+                return;
+            }
+            System.out.println("False");
             try {
                 String title = managerBook_bookTitle.getText();
                 String author = managerBook_author.getText();
@@ -676,6 +682,10 @@ public class FXMLDashBoardController implements Initializable {
     @FXML
     private void DeleteBook() {
         if (selectedBook != null) {
+            if(BorrowBookEntity.IsExistedInBorrowBook(selectedBook.getBookID())) {
+                showAlert("Error", "Delete Error", "Book are being borrowed ");
+                return;
+            }
             int deletedBookID = selectedBook.getBookID();
             BookEntity.DeleteBook(deletedBookID);
             showAlert("Success!", "Delete Book successfully!", "Book is deleted: " + selectedBook.getBookTitle());

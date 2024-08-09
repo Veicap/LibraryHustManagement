@@ -47,10 +47,7 @@ public class BookEntity extends BaseEntity {
         open();
         ResultSet resultSet = null;
         try {
-            // Mở kết nối
-            
 
-            // Truy vấn kiểm tra sự tồn tại của quyển sách
             String query = "SELECT COUNT(*) FROM book WHERE title = ? AND author = ? AND genre = ? AND publisher = ? AND publicationDate = ?";
             statement = conn.prepareStatement(query);
             statement.setString(1, newBook.getBookTitle());
