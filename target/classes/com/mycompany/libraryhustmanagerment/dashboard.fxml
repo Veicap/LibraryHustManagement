@@ -23,12 +23,12 @@
                <children>
                   <AnchorPane layoutX="106.0" layoutY="-86.0" prefHeight="46.0" prefWidth="1148.0" styleClass="top-form" stylesheets="@designDashboard.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Button fx:id="close_btn" layoutX="1078.0" layoutY="2.0" mnemonicParsing="false" onAction="#dasboard_form_close" prefHeight="24.0" prefWidth="70.0" styleClass="close" stylesheets="@designDashboard.css">
+                        <Button fx:id="close_btn" layoutX="1112.0" layoutY="3.0" mnemonicParsing="false" onAction="#dasboard_form_close" prefHeight="24.0" prefWidth="70.0" styleClass="close" stylesheets="@designDashboard.css">
                            <graphic>
                               <FontAwesomeIconView glyphName="CLOSE" size="1.2em" />
                            </graphic>
                         </Button>
-                        <Button fx:id="minimize_btn" layoutX="1003.4000000000001" layoutY="2.0" mnemonicParsing="false" onAction="#dasboard_form_minimize" prefHeight="24.0" prefWidth="58.0" styleClass="minus" stylesheets="@designDashboard.css" AnchorPane.rightAnchor="78.0">
+                        <Button fx:id="minimize_btn" layoutX="1062.4" layoutY="3.0" mnemonicParsing="false" onAction="#dasboard_form_minimize" prefHeight="24.0" prefWidth="58.0" styleClass="minus" stylesheets="@designDashboard.css" AnchorPane.rightAnchor="61.59999999999991">
                            <graphic>
                               <FontAwesomeIconView glyphName="MINUS" />
                            </graphic>
@@ -45,30 +45,30 @@
             </AnchorPane>
          </top>
          <left>
-            <AnchorPane onMouseClicked="#SetValueBorrowBookAll" prefHeight="517.0" prefWidth="187.0" styleClass="nav-form" stylesheets="@designDashboard.css" BorderPane.alignment="CENTER">
+            <AnchorPane onMouseClicked="#SetValueBorrowBookAll" prefHeight="583.0" prefWidth="212.0" styleClass="nav-form" stylesheets="@designDashboard.css" BorderPane.alignment="CENTER">
                <children>
-                  <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="63.0" layoutY="75.0" size="7em" />
-                  <Label layoutX="56.0" layoutY="91.0" text="Welcome" textFill="WHITE">
+                  <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="75.0" layoutY="75.0" size="7em" />
+                  <Label layoutX="68.0" layoutY="91.0" text="Welcome" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="login_accountId" alignment="CENTER" layoutX="-4.0" layoutY="152.0" prefHeight="18.0" prefWidth="190.0" text="Account ID" textFill="WHITE">
+                  <Label fx:id="login_accountId" alignment="CENTER" layoutX="8.0" layoutY="159.0" prefHeight="18.0" prefWidth="190.0" text="Account ID" textFill="WHITE">
                      <font>
                         <Font name="Microsoft Sans Serif" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="managerBook_btn" layoutX="6.0" layoutY="266.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="62.0" prefWidth="181.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Books Management">
+                  <Button fx:id="managerBook_btn" layoutX="6.0" layoutY="266.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="62.0" prefWidth="195.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Books Management">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="SERVER" />
                      </graphic>
                   </Button>
-                  <Button fx:id="borrowedBooks_btn" alignment="CENTER" layoutX="5.0" layoutY="319.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Borrowed Books">
+                  <Button fx:id="borrowedBooks_btn" alignment="CENTER" layoutX="5.0" layoutY="319.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="195.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Borrowed Books">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="EDIT" />
                      </graphic>
                   </Button>
-                  <Button fx:id="accountBtn" layoutX="5.0" layoutY="375.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="61.0" prefWidth="182.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Accounts Management">
+                  <Button fx:id="accountBtn" layoutX="5.0" layoutY="375.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="62.0" prefWidth="202.0" styleClass="nav-btn" stylesheets="@designDashboard.css" text="Accounts Management">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="USERS" />
                      </graphic>
@@ -83,12 +83,12 @@
                         <Font name="Microsoft Sans Serif" size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="login_role" alignment="CENTER" layoutX="-6.0" layoutY="182.0" prefHeight="18.0" prefWidth="190.0" text="Role" textFill="WHITE">
+                  <Label fx:id="login_role" alignment="CENTER" layoutX="6.0" layoutY="196.0" prefHeight="18.0" prefWidth="190.0" text="Role" textFill="WHITE">
                      <font>
                         <Font name="Microsoft Sans Serif" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="login_name" alignment="CENTER" layoutX="-5.0" layoutY="125.0" prefHeight="18.0" prefWidth="190.0" text="Name" textFill="WHITE">
+                  <Label fx:id="login_name" alignment="CENTER" layoutX="7.0" layoutY="126.0" prefHeight="18.0" prefWidth="190.0" text="Name" textFill="WHITE">
                      <font>
                         <Font name="Microsoft Sans Serif" size="18.0" />
                      </font>
