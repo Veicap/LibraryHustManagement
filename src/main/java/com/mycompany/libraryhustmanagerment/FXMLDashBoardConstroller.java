@@ -5,6 +5,7 @@
 package com.mycompany.libraryhustmanagerment;
 
 
+import com.mycompany.entities.AccountEntity;
 import com.mycompany.entities.BookEntity;
 import com.mycompany.entities.BorrowBookEntity;
 import com.mycompany.entities.CatalogEntity;
@@ -456,7 +457,6 @@ public class FXMLDashBoardConstroller implements Initializable {
 
     // Set value for comboBox
     private void SetValueForComboBox(ComboBox<String> comboBox, List<String> catalogList, String model) {
-        comboBox.getItems().clear();
         comboBox.getItems().clear();
         comboBox.getItems().addAll("None");
         for (int i = 0; i < catalogList.size(); i++) {
@@ -1037,18 +1037,22 @@ public class FXMLDashBoardConstroller implements Initializable {
 
         try {
             borrowID = Integer.parseInt(borrowStringID);
+            System.out.println(borrowID);
         } catch (NumberFormatException ex) {
-            ex.printStackTrace();
+            System.out.println("Search for all borrowID.");
+           // return;
         }
         try {
             bookID = Integer.parseInt(bookStringID);
         } catch (NumberFormatException ex) {
-            ex.printStackTrace();
+            System.out.println("Search for all bookID.");
+            //return;
         }
         try {
             accountID = Integer.parseInt(accountStringID);
         } catch (NumberFormatException ex) {
-            ex.printStackTrace();
+            System.out.println("Search for all accountID");
+           // return;
         }
         setValueForBorrowBookTableView(BorrowBookEntity.GetDataBorrowSearch(borrowID, bookID, accountID));
     }
@@ -1072,6 +1076,15 @@ public class FXMLDashBoardConstroller implements Initializable {
                 Integer studentID = null;
                 try {
                     studentID = Integer.valueOf(managerBook_studentID.getText());
+                    Account studentAccount = AccountEntity.GetDataAccountById(studentID);
+                    if(studentAccount == null) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error!!!");
+                        alert.setHeaderText("Borrow Book Failure!!!");
+                        alert.setContentText("Incorrect student ID, please try again!!!");
+                        alert.showAndWait();
+                        return;
+                    }
                 } catch (NumberFormatException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!!!");
@@ -1091,6 +1104,11 @@ public class FXMLDashBoardConstroller implements Initializable {
                 alert.setContentText("Book borrowed is: " + selectedBook.getBookTitle());
                 alert.showAndWait();
                 managerBook_studentID.clear();
+                ResetForm();
+                SetValueForBorrowIDSearch();
+                SetValueForBookIDSearch();
+                SetValueForAccountIDSearch();
+                
                 try {
                     SetValueMangagetBookAll();
                     SetValueBorrowBookAll();
@@ -1131,5 +1149,7 @@ public class FXMLDashBoardConstroller implements Initializable {
                 }
             }
         }
+        // unselect selectedBorrowedBook;
+        selectedBorrowBook = null;
     }
 }
