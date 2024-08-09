@@ -4,6 +4,12 @@
  */
 package com.mycompany.libraryhustmanagerment;
 
+
+import com.mycompany.entities.AccountEntity;
+import com.mycompany.entities.BookEntity;
+import com.mycompany.entities.BorrowBookEntity;
+import com.mycompany.entities.CatalogEntity;
+import java.io.Console;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -14,13 +20,14 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 
 import com.mycompany.entities.AccountEntity;
-import com.mycompany.entities.BookEntity;
-import com.mycompany.entities.CatalogEntity;
-
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,9 +43,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -46,6 +57,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import models.Account;
 import models.Book;
 import models.BorrowBook;
@@ -123,7 +135,7 @@ public class FXMLDashBoardConstroller implements Initializable {
     private Button borrowedBook_selectBook;
 
     @FXML
-    private ComboBox<?> borrowedBooks_bookIDSearch;
+    private ComboBox<String> borrowedBooks_bookIDSearch;
 
     @FXML
     private TableColumn<BorrowBook, Integer> borrowedBooks_bookIDTable;
@@ -132,10 +144,10 @@ public class FXMLDashBoardConstroller implements Initializable {
     private TableColumn<BorrowBook, String> borrowedBooks_bookTitleTable;
 
     @FXML
-    private TableColumn<BorrowBook, Date> borrowedBooks_borrowDateTable;
+    private TableColumn<?, ?> borrowedBooks_borrowDateTable;
 
     @FXML
-    private ComboBox<Integer> borrowedBooks_borrowIDSearch;
+    private ComboBox<String> borrowedBooks_borrowIDSearch;
 
     @FXML
     private TableColumn<BorrowBook, Integer> borrowedBooks_borrowIDTable;
@@ -150,19 +162,19 @@ public class FXMLDashBoardConstroller implements Initializable {
     private Button borrowedBook_showBorrowedBookBtn;
 
     @FXML
-    private TableColumn<BorrowBook, Date> borrowedBooks_dueDateTable;
+    private TableColumn<?, ?> borrowedBooks_dueDateTable;
 
     @FXML
     private AnchorPane borrowedBooks_form;
 
     @FXML
-    private TableColumn<BorrowBook, Date> borrowedBooks_returnDateTable;
+    private TableColumn<?, ?> borrowedBooks_returnDateTable;
 
     @FXML
     private ComboBox<String> borrowedBooks_studentIDSearch;
 
     @FXML
-    private TableColumn<BorrowBook, String> borrowedBooks_studentIDTable;
+    private TableColumn<BorrowBook, Integer> borrowedBooks_studentIDTable;
 
     @FXML
     private TableView<BorrowBook> borrowedBooks_tableView;
@@ -219,6 +231,9 @@ public class FXMLDashBoardConstroller implements Initializable {
     private ComboBox<String> managerBook_bookTitleSearch;
 
     @FXML
+    private TextField managerBook_studentID;
+
+    @FXML
     private TableColumn<Book, String> managerBook_bookTitleTable;
 
     @FXML
@@ -270,9 +285,6 @@ public class FXMLDashBoardConstroller implements Initializable {
     private TextField managerBook_stock;
 
     @FXML
-    private TextField managerBook_studentID;
-
-    @FXML
     private TableView<Book> managerBook_tableView;
 
     @FXML
@@ -290,6 +302,13 @@ public class FXMLDashBoardConstroller implements Initializable {
     @FXML
     private Button signout_btn;
 
+    @FXML
+    private TableView<Account> account_TableView;
+
+    
+    
+    
+    
     @FXML
     private void dasboard_form_close() {
         System.exit(0);
@@ -331,6 +350,7 @@ public class FXMLDashBoardConstroller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             SetValueMangagetBookAll();
+            SetValueBorrowBookAll();
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -349,14 +369,11 @@ public class FXMLDashBoardConstroller implements Initializable {
         account_roleColumn
                 .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetRole()));
         ShowAllAccountsInTable();
+        // UPdateCatalog borrowBook
+        SetValueForBorrowIDSearch();
+        SetValueForBookIDSearch();
+        SetValueForAccountIDSearch();
     }
-
-    /*
-     *
-     * //! Book Function
-     *
-     */
-
     private Boolean checkStringNotNULL(String nameOfObject, TextField textField) {
         try {
             if (!textField.getText().equals("")) {
@@ -370,7 +387,7 @@ public class FXMLDashBoardConstroller implements Initializable {
             return false;
         }
     }
-
+    //! Function AddBook
     @FXML
     private void AddBook() {
         String bookTitle = null;
@@ -444,7 +461,6 @@ public class FXMLDashBoardConstroller implements Initializable {
 
     // Set value for comboBox
     private void SetValueForComboBox(ComboBox<String> comboBox, List<String> catalogList, String model) {
-        comboBox.getItems().clear();
         comboBox.getItems().clear();
         comboBox.getItems().addAll("None");
         for (int i = 0; i < catalogList.size(); i++) {
@@ -961,5 +977,183 @@ public class FXMLDashBoardConstroller implements Initializable {
             account_accountID.setOnMouseExited(null);
             isTextFieldLocked = false;
         }
+    }
+
+
+    
+
+    private BorrowBook selectedBorrowBook = null;
+
+    @FXML
+    private void SelectBorrowBook() {
+        selectedBorrowBook = borrowedBooks_tableView.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success!!!");
+        alert.setHeaderText("Selected Book successfully!!!");
+        alert.setContentText("Book is selected: " + selectedBorrowBook.getTitle());
+        alert.showAndWait();
+        SetValueForUpdateForm();
+        System.out.print(selectedBorrowBook.getBookID());
+    }
+
+    @FXML
+    void SetValueBorrowBookAll() throws SQLException {
+        ObservableList<BorrowBook> borrowBookDataList = BorrowBookEntity.GetDataBorrowBooks();
+        setValueForBorrowBookTableView(borrowBookDataList);
+    }
+
+    private void setValueForBorrowBookTableView(ObservableList<BorrowBook> borrowBookDataList) {
+        // setvalue for table
+        borrowedBooks_bookTitleTable.setCellValueFactory(new PropertyValueFactory<>("title"));
+        borrowedBooks_bookIDTable.setCellValueFactory(new PropertyValueFactory<>("bookID"));
+        borrowedBooks_borrowIDTable.setCellValueFactory(new PropertyValueFactory<>("borrowID"));
+        borrowedBooks_studentIDTable.setCellValueFactory(new PropertyValueFactory<>("accountID"));
+        borrowedBooks_borrowDateTable.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        borrowedBooks_dueDateTable.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
+        borrowedBooks_returnDateTable.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        borrowedBooks_tableView.setItems(borrowBookDataList);
+    }
+
+    private void SetValueForBorrowIDSearch() {
+        List<String> borrowIDList = BorrowBookEntity.getBorrowIDList();
+        SetValueForComboBox(borrowedBooks_borrowIDSearch, borrowIDList, "Borrow ID");
+    }
+
+    private void SetValueForBookIDSearch() {
+        List<String> bookIDList = BorrowBookEntity.getBookIDList();
+        SetValueForComboBox(borrowedBooks_bookIDSearch, bookIDList, "Book ID");
+    }
+
+    private void SetValueForAccountIDSearch() {
+        List<String> accountIDList = BorrowBookEntity.getAccountIDList();
+        SetValueForComboBox(borrowedBooks_studentIDSearch, accountIDList, "Account ID");
+    }
+
+    @FXML
+    private void SetValueBorrowBookSearch() throws SQLException {
+        String borrowStringID = borrowedBooks_borrowIDSearch.getValue();
+        String bookStringID = borrowedBooks_bookIDSearch.getValue();
+        String accountStringID = borrowedBooks_studentIDSearch.getValue();
+
+        Integer borrowID = 0;
+        Integer bookID = 0;
+        Integer accountID = 0;
+
+        try {
+            borrowID = Integer.parseInt(borrowStringID);
+            System.out.println(borrowID);
+        } catch (NumberFormatException ex) {
+            System.out.println("Search for all borrowID.");
+           // return;
+        }
+        try {
+            bookID = Integer.parseInt(bookStringID);
+        } catch (NumberFormatException ex) {
+            System.out.println("Search for all bookID.");
+            //return;
+        }
+        try {
+            accountID = Integer.parseInt(accountStringID);
+        } catch (NumberFormatException ex) {
+            System.out.println("Search for all accountID");
+           // return;
+        }
+        setValueForBorrowBookTableView(BorrowBookEntity.GetDataBorrowSearch(borrowID, bookID, accountID));
+    }
+
+    @FXML
+    private void BorrowBook() {
+        if (selectedBook != null) {
+            // If no book available
+            if (selectedBook.getAvailBook() <= 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!!!");
+                alert.setHeaderText("Borrow Book Failure!!!");
+                alert.setContentText("This book is out of stock!!!");
+                alert.showAndWait();
+                return;
+            } else {
+                Integer bookID = null;
+                bookID = selectedBook.getBookID();
+                String title = "";
+                title = selectedBook.getBookTitle();
+                Integer studentID = null;
+                try {
+                    studentID = Integer.valueOf(managerBook_studentID.getText());
+                    Account studentAccount = AccountEntity.GetDataAccountById(studentID);
+                    if(studentAccount == null) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error!!!");
+                        alert.setHeaderText("Borrow Book Failure!!!");
+                        alert.setContentText("Incorrect student ID, please try again!!!");
+                        alert.showAndWait();
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!!!");
+                    alert.setHeaderText("Borrow Book Failure!!!");
+                    alert.setContentText("Incorrect student ID, please try again!!!");
+                    alert.showAndWait();
+                    return;
+                }
+                // - 1 book from number of available books
+                BookEntity.UpdateBorrowAvailBook(selectedBook);
+                // Add to Borrow Book
+                BorrowBook newBorrow = new BorrowBook(bookID, studentID, title);
+                BorrowBookEntity.BorrowBook(newBorrow);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success!!!");
+                alert.setHeaderText("Book is borrowed successfully!!!");
+                alert.setContentText("Book borrowed is: " + selectedBook.getBookTitle());
+                alert.showAndWait();
+                managerBook_studentID.clear();
+                ResetForm();
+                SetValueForBorrowIDSearch();
+                SetValueForBookIDSearch();
+                SetValueForAccountIDSearch();
+                
+                try {
+                    SetValueMangagetBookAll();
+                    SetValueBorrowBookAll();
+                } catch (SQLException ex) {
+                    Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void ReturnBook() {
+        if (selectedBorrowBook != null) {
+            if (selectedBorrowBook.getReturnDate() != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!!!");
+                alert.setHeaderText("Return Book Failure!!!");
+                alert.setContentText("This book is already Returned!!!");
+                alert.showAndWait();
+                return;
+            } else {
+                Integer bookID = null;
+                bookID = selectedBorrowBook.getBookID();
+                // - 1 book from number of available books
+                BorrowBookEntity.returnBook(selectedBorrowBook);
+                BookEntity.UpdateReturnAvailBook(bookID, BookEntity.getAvailLeftFromID(bookID));
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success!!!");
+                alert.setHeaderText("Book is Returned successfully!!!");
+                alert.setContentText("Book returned is: " + selectedBorrowBook.getTitle());
+                alert.showAndWait();
+                try {
+                    SetValueMangagetBookAll();
+                    SetValueBorrowBookAll();
+                } catch (SQLException ex) {
+                    Logger.getLogger(FXMLDashBoardConstroller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        // unselect selectedBorrowedBook;
+        selectedBorrowBook = null;
     }
 }
