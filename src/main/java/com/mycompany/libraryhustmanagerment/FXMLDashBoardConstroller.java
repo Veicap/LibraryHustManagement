@@ -369,6 +369,10 @@ public class FXMLDashBoardConstroller implements Initializable {
         account_roleColumn
                 .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetRole()));
         ShowAllAccountsInTable();
+        // UPdateCatalog borrowBook
+        SetValueForBorrowIDSearch();
+        SetValueForBookIDSearch();
+        SetValueForAccountIDSearch();
     }
     private Boolean checkStringNotNULL(String nameOfObject, TextField textField) {
         try {
