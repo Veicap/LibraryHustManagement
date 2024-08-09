@@ -1109,26 +1109,39 @@ public class FXMLDashBoardController implements Initializable {
         String borrowStringID = borrowedBooks_borrowIDSearch.getValue();
         String bookStringID = borrowedBooks_bookIDSearch.getValue();
         String accountStringID = borrowedBooks_studentIDSearch.getValue();
-
+        if(IsStudent()) {
+            if(("Account ID".equals(accountStringID) ||"None".equals(accountStringID)) &&
+                    ("Borrow ID".equals(borrowStringID) ||"None".equals(borrowStringID))  &&
+                    ("Book ID".equals(bookStringID) ||"None".equals(bookStringID))) {
+                ObservableList<BorrowBook> borrowBookDataList = BorrowBookEntity.GetDataBorrowBooksByStudentID(accountStudentLogin.GetAccountId());
+                setValueForBorrowBookTableView(borrowBookDataList);
+                
+                System.out.println("True");
+                return;
+            }
+        }
+//        System.out.println(borrowStringID);
+//        System.out.println(bookStringID);
+//        System.out.println(accountStringID);
         Integer borrowID = 0;
         Integer bookID = 0;
         Integer accountID = 0;
 
         try {
-            borrowID = Integer.parseInt(borrowStringID);
+            borrowID = Integer.valueOf(borrowStringID);
             System.out.println(borrowID);
         } catch (NumberFormatException ex) {
             System.out.println("Search for all borrowID.");
            // return;
         }
         try {
-            bookID = Integer.parseInt(bookStringID);
+            bookID = Integer.valueOf(bookStringID);
         } catch (NumberFormatException ex) {
             System.out.println("Search for all bookID.");
             //return;
         }
         try {
-            accountID = Integer.parseInt(accountStringID);
+            accountID = Integer.valueOf(accountStringID);
         } catch (NumberFormatException ex) {
             System.out.println("Search for all accountID");
            // return;
