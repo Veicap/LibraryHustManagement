@@ -193,4 +193,29 @@ public class AccountEntity extends BaseEntity {
         }
         return accounts;
     }
+    public static Account GetAccountByStudentID(Integer studentID) throws SQLException {
+        Account account = null;
+        open();
+        
+        try {
+            String sql = "Select * From account WHERE accountID = ?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, studentID);
+            
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                account = new Account(
+                        rs.getInt("accountID"),
+                        rs.getString("name"),
+                        rs.getString("emailAddress"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("password"),
+                        rs.getString("role"));
+            }
+        } finally {
+            close();
+        }
+        return account;
+    }
 }
