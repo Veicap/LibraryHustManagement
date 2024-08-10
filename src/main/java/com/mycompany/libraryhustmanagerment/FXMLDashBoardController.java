@@ -57,6 +57,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -162,6 +163,9 @@ public class FXMLDashBoardController implements Initializable {
 
     @FXML
     private Button borrowedBook_showBorrowedBookBtn;
+    
+    @FXML
+    private Button borrowedBook_studentDetailBtn;
 
     @FXML
     private TableColumn<?, ?> borrowedBooks_dueDateTable;
@@ -240,6 +244,7 @@ public class FXMLDashBoardController implements Initializable {
 
     @FXML
     private Button managerBook_borrowBookBtn;
+    
 
     @FXML
     private Button managerBook_borrowBookBtnComplete;
@@ -1054,7 +1059,32 @@ public class FXMLDashBoardController implements Initializable {
         System.out.println(selectedBorrowBook.getBookID());
         
     }
-    
+    @FXML 
+    private void ShowStudentInforDetail() throws SQLException {
+        if(selectedBorrowBook != null) {
+            Account studentAccount = AccountEntity.GetAccountByStudentID(selectedBorrowBook.getAccountID());
+            if(studentAccount == null) {
+                showAlert("Error!!!","Show Infor Failure!!!","Student is deleted or not exist");
+                return;
+            }
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Student Details");
+            alert.setHeaderText(null); // Không có tiêu đề
+
+            // Tạo VBox để chứa thông tin
+            VBox content = new VBox();
+            content.getChildren().addAll(
+                new Label("ID: " + studentAccount.GetAccountId().toString()),
+                new Label("Name: " + studentAccount.GetName()),
+                new Label("Emai: " + studentAccount.GetEmailAddress()),
+                new Label("Phone Number: " + studentAccount.GetPhoneNumber())
+            );
+
+            alert.getDialogPane().setContent(content);
+            alert.showAndWait();
+        } 
+        
+    }
     // Setvalue for tableview
     @FXML
     void SetValueBorrowBookAll() throws SQLException {
@@ -1171,6 +1201,7 @@ public class FXMLDashBoardController implements Initializable {
         if (selectedBook != null) {
             // If no book available
             if (selectedBook.getAvailBook() <= 0) {
+                showAlert("Error!!!","Borrow Book Failure!!!","This book is out of stock!!!");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error!!!");
                 alert.setHeaderText("Borrow Book Failure!!!");
@@ -1187,19 +1218,11 @@ public class FXMLDashBoardController implements Initializable {
                     studentID = Integer.valueOf(managerBook_studentID.getText());
                     Account studentAccount = AccountEntity.GetDataAccountById(studentID);
                     if(studentAccount == null) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error!!!");
-                        alert.setHeaderText("Borrow Book Failure!!!");
-                        alert.setContentText("Incorrect student ID, please try again!!!");
-                        alert.showAndWait();
+                        showAlert("Error!!!","Borrow Book Failure!!!","Incorrect student ID, please try again!!!");
                         return;
                     }
-                } catch (NumberFormatException ex) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!!!");
-                    alert.setHeaderText("Borrow Book Failure!!!");
-                    alert.setContentText("Incorrect student ID, please try again!!!");
-                    alert.showAndWait();
+                } catch (NumberFormatException ex) {                   
+                    showAlert("Error!!!","Borrow Book Failure!!!","Incorrect student ID, please try again!!!");
                     return;
                 }
                 // - 1 book from number of available books
@@ -1207,11 +1230,8 @@ public class FXMLDashBoardController implements Initializable {
                 // Add to Borrow Book
                 BorrowBook newBorrow = new BorrowBook(bookID, studentID, title);
                 BorrowBookEntity.BorrowBook(newBorrow);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success!!!");
-                alert.setHeaderText("Book is borrowed successfully!!!");
-                alert.setContentText("Book borrowed is: " + selectedBook.getBookTitle());
-                alert.showAndWait();
+                showAlert("Success!!!","Book is borrowed successfully!!!","Book borrowed is: " + selectedBorrowBook.getTitle());
+ 
                 managerBook_studentID.clear();
                 ResetForm();
                 SetValueForBorrowIDSearch();
@@ -1232,11 +1252,7 @@ public class FXMLDashBoardController implements Initializable {
     private void ReturnBook() {
         if (selectedBorrowBook != null) {
             if (selectedBorrowBook.getReturnDate() != null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error!!!");
-                alert.setHeaderText("Return Book Failure!!!");
-                alert.setContentText("This book is already Returned!!!");
-                alert.showAndWait();
+                showAlert("Error!!!","Return Book Failure!!!","Book returned is: " + selectedBorrowBook.getTitle());
                 return;
             } else {
                 Integer bookID = null;
@@ -1244,12 +1260,7 @@ public class FXMLDashBoardController implements Initializable {
                 // - 1 book from number of available books
                 BorrowBookEntity.returnBook(selectedBorrowBook);
                 BookEntity.UpdateReturnAvailBook(bookID, BookEntity.getAvailLeftFromID(bookID));
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success!!!");
-                alert.setHeaderText("Book is Returned successfully!!!");
-                alert.setContentText("Book returned is: " + selectedBorrowBook.getTitle());
-                alert.showAndWait();
+                showAlert("Success!!!","Book is Returned successfully!!!","Book returned is: " + selectedBorrowBook.getTitle());
                 try {
                     SetValueMangagetBookAll();
                     SetValueBorrowBookAll();
