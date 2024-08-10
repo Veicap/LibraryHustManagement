@@ -322,7 +322,7 @@
                                     </LinearGradient>
                                  </textFill>
                               </Button>
-                              <Button fx:id="borrowedBook_studentDetailBtn" layoutX="628.0" layoutY="508.0" mnemonicParsing="false" onAction="#ShowStudentInforDetail" prefHeight="42.0" prefWidth="120.0" styleClass="select-btn" stylesheets="@designDashboard.css" text="Student Detail" />
+                              <Button fx:id="borrowedBook_studentDetailBtn" layoutX="628.0" layoutY="508.0" mnemonicParsing="false" onAction="#ShowStudentInforDetail" prefHeight="42.0" prefWidth="146.0" styleClass="select-btn" stylesheets="@designDashboard.css" text="Student Detail" />
                            </children>
                         </AnchorPane>
                      </children>
