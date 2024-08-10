@@ -746,6 +746,7 @@ public class FXMLDashBoardController implements Initializable {
         DisableButtonWithLockIcon(borrowedBook_selectBook);
         DisableButtonWithLockIcon(borrowedBook_returnBook);
         DisableButtonWithLockIcon(accountBtn);
+        DisableButtonWithLockIcon(borrowedBook_studentDetailBtn);
     }
 
     private void DisableButtonWithLockIcon(Button button) {
