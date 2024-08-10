@@ -1200,6 +1200,7 @@ public class FXMLDashBoardController implements Initializable {
     @FXML
     private void BorrowBook() {
         if (selectedBook != null) {
+            System.out.println(selectedBook.getBookID());
             // If no book available
             if (selectedBook.getAvailBook() <= 0) {
                 showAlert("Error!!!","Borrow Book Failure!!!","This book is out of stock!!!");
@@ -1231,7 +1232,7 @@ public class FXMLDashBoardController implements Initializable {
                 // Add to Borrow Book
                 BorrowBook newBorrow = new BorrowBook(bookID, studentID, title);
                 BorrowBookEntity.BorrowBook(newBorrow);
-                showAlert("Success!!!","Book is borrowed successfully!!!","Book borrowed is: " + selectedBorrowBook.getTitle());
+                showAlert("Success!!!","Book is borrowed successfully!!!","Book borrowed is: " + selectedBook.getBookTitle());
  
                 managerBook_studentID.clear();
                 ResetForm();
