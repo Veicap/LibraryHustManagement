@@ -97,11 +97,11 @@
             </AnchorPane>
          </left>
          <center>
-            <AnchorPane fx:id="dasboard_form" prefHeight="200.0" prefWidth="961.0" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="dasboard_form" prefHeight="583.0" prefWidth="992.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="managerBook_form" layoutX="186.0" layoutY="79.0" prefHeight="544.0" prefWidth="900.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="managerBook_form" layoutX="4.0" layoutY="-15.0" prefHeight="544.0" prefWidth="900.8" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="-15.0">
                      <children>
-                        <AnchorPane layoutX="5.0" prefHeight="574.0" prefWidth="257.0" styleClass="bg-white" stylesheets="@designDashboard.css">
+                        <AnchorPane layoutX="5.0" layoutY="12.0" prefHeight="574.0" prefWidth="257.0" styleClass="bg-white" stylesheets="@designDashboard.css">
                            <children>
                               <Label layoutX="33.0" layoutY="36.0" prefHeight="18.0" prefWidth="74.0" text="Book Title:">
                                  <font>
@@ -145,9 +145,9 @@
                               <Button fx:id="managerBook_updateBtn" layoutX="140.0" layoutY="407.0" mnemonicParsing="false" onAction="#UpdateBook" prefHeight="42.0" prefWidth="105.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Update" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="273.0" prefHeight="573.0" prefWidth="683.0" styleClass="bg-white" stylesheets="@designDashboard.css">
+                        <AnchorPane layoutX="269.0" layoutY="10.0" prefHeight="573.0" prefWidth="683.0" styleClass="bg-white" stylesheets="@designDashboard.css">
                            <children>
-                              <TableView fx:id="managerBook_tableView" layoutX="4.0" layoutY="80.0" prefHeight="407.0" prefWidth="679.0" stylesheets="@designDashboard.css">
+                              <TableView fx:id="managerBook_tableView" layoutX="4.0" layoutY="82.0" prefHeight="407.0" prefWidth="679.0" stylesheets="@designDashboard.css">
                                 <columns>
                                     <TableColumn fx:id="managerBook_bookID" minWidth="8.0" prefWidth="47.0" text="BookID" />
                                   <TableColumn fx:id="managerBook_bookTitleTable" prefWidth="119.0" text="Book Title" />
@@ -303,8 +303,8 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <Button fx:id="borrowedBook_returnBook" layoutX="486.0" layoutY="508.0" mnemonicParsing="false" onAction="#ReturnBook" prefHeight="42.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Return Book" />
-                              <Button fx:id="borrowedBook_selectBook" layoutX="341.0" layoutY="508.0" mnemonicParsing="false" onAction="#SelectBorrowBook" prefHeight="42.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Select Book">
+                              <Button fx:id="borrowedBook_returnBook" layoutX="644.0" layoutY="515.0" mnemonicParsing="false" onAction="#ReturnBook" prefHeight="42.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Return Book" />
+                              <Button fx:id="borrowedBook_selectBook" layoutX="499.0" layoutY="515.0" mnemonicParsing="false" onAction="#SelectBorrowBook" prefHeight="42.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Select Book">
                                  <textFill>
                                     <LinearGradient endX="1.0" endY="1.0">
                                        <stops>
@@ -322,12 +322,12 @@
                                     </LinearGradient>
                                  </textFill>
                               </Button>
-                              <Button fx:id="borrowedBook_studentDetailBtn" layoutX="628.0" layoutY="508.0" mnemonicParsing="false" onAction="#ShowStudentInforDetail" prefHeight="42.0" prefWidth="146.0" styleClass="select-btn" stylesheets="@designDashboard.css" text="Student Detail" />
+                              <Button fx:id="borrowedBook_studentDetailBtn" layoutX="786.0" layoutY="515.0" mnemonicParsing="false" onAction="#ShowStudentInforDetail" prefHeight="42.0" prefWidth="146.0" styleClass="select-btn" stylesheets="@designDashboard.css" text="Student Detail" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="account_form" layoutX="4.0" layoutY="10.0" prefHeight="563.0" prefWidth="956.0" visible="false">
+                  <AnchorPane fx:id="account_form" layoutX="4.0" layoutY="10.0" prefHeight="563.0" prefWidth="956.0">
                      <children>
                         <AnchorPane layoutY="-10.0" prefHeight="573.0" prefWidth="257.0" styleClass="bg-white" stylesheets="@designDashboard.css">
                            <children>
@@ -369,7 +369,7 @@
                         </AnchorPane>
                         <AnchorPane layoutX="264.0" layoutY="-10.0" prefHeight="572.0" prefWidth="682.0" styleClass="bg-white" stylesheets="@designDashboard.css">
                            <children>
-                              <TableView fx:id="account_accountTableView" layoutY="67.0" prefHeight="423.0" prefWidth="682.0" stylesheets="@designDashboard.css">
+                              <TableView fx:id="account_accountTableView" layoutY="67.0" prefHeight="441.0" prefWidth="682.0" stylesheets="@designDashboard.css">
                                  <columns>
                                     <TableColumn fx:id="account_accountIdColumn" prefWidth="74.0" text="Account ID" />
                                     <TableColumn fx:id="account_nameColumn" prefWidth="119.0" text="Name" />
@@ -381,7 +381,7 @@
                               </TableView>
                               <TextField fx:id="account_searchByUserID" layoutX="8.0" layoutY="16.0" prefHeight="34.0" prefWidth="154.0" promptText="Search By Account ID" styleClass="search" stylesheets="@designDashboard.css" />
                               <FontAwesomeIconView glyphName="SEARCH" layoutX="13.0" layoutY="38.0" size="1.4em" />
-                              <Button fx:id="account_selectAccount" layoutX="281.0" layoutY="508.0" mnemonicParsing="false" onAction="#SelectAccount" prefHeight="44.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Select Account" textFill="#c1cc76" />
+                              <Button fx:id="account_selectAccount" layoutX="548.0" layoutY="514.0" mnemonicParsing="false" onAction="#SelectAccount" prefHeight="44.0" prefWidth="120.0" styleClass="update-btn" stylesheets="@designDashboard.css" text="Select Account" textFill="#c1cc76" />
                               <Button layoutX="175.0" layoutY="10.0" mnemonicParsing="false" onAction="#HandleSearchByAccountId" prefHeight="44.0" prefWidth="65.0" styleClass="add-btn" stylesheets="@designDashboard.css" text="Search" textFill="#c1cc76" />
                               <Button layoutX="257.0" layoutY="10.0" mnemonicParsing="false" onAction="#RefreshAccountTableView" prefHeight="44.0" prefWidth="90.0" styleClass="add-btn" stylesheets="@designDashboard.css" text="Refresh" textFill="#c1cc76" />
                            </children>

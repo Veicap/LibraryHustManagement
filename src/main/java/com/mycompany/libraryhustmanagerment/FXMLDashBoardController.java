@@ -1060,32 +1060,8 @@ public class FXMLDashBoardController implements Initializable {
         System.out.println(selectedBorrowBook.getBookID());
         
     }
-    @FXML 
-    private void ShowStudentInforDetail() throws SQLException {
-        if(selectedBorrowBook != null) {
-            Account studentAccount = AccountEntity.GetAccountByStudentID(selectedBorrowBook.getAccountID());
-            if(studentAccount == null) {
-                showAlert("Error!!!","Show Infor Failure!!!","Student is deleted or not exist");
-                return;
-            }
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Student Details");
-            alert.setHeaderText(null); // Không có tiêu đề
-
-            // Tạo VBox để chứa thông tin
-            VBox content = new VBox();
-            content.getChildren().addAll(
-                new Label("ID: " + studentAccount.GetAccountId().toString()),
-                new Label("Name: " + studentAccount.GetName()),
-                new Label("Emai: " + studentAccount.GetEmailAddress()),
-                new Label("Phone Number: " + studentAccount.GetPhoneNumber())
-            );
-
-            alert.getDialogPane().setContent(content);
-            alert.showAndWait();
-        } 
-        
-    }
+   
+    
     // Setvalue for tableview
     @FXML
     void SetValueBorrowBookAll() throws SQLException {
@@ -1196,19 +1172,39 @@ public class FXMLDashBoardController implements Initializable {
         setValueForBorrowBookTableView(BorrowBookEntity.GetDataBorrowSearch(borrowID, bookID, accountID));
         
     }
+    
+    @FXML
+    private void ShowStudentInforDetail() throws SQLException {
+        if (selectedBorrowBook != null) {
+            Account studentAccount = AccountEntity.GetDataAccountById(selectedBorrowBook.getAccountID());
+            if (studentAccount == null) {
+                showAlert("Error!", "Show Infor Failure!", "Student is deleted or not exist");
+                return;
+            }
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Student Details");
+            alert.setHeaderText(null); // Không có tiêu đề
 
+            // Tạo VBox để chứa thông tin
+            VBox content = new VBox();
+            content.getChildren().addAll(
+                    new Label("ID: " + studentAccount.GetAccountId().toString()),
+                    new Label("Name: " + studentAccount.GetName()),
+                    new Label("Emai: " + studentAccount.GetEmailAddress()),
+                    new Label("Phone Number: " + studentAccount.GetPhoneNumber()));
+
+            alert.getDialogPane().setContent(content);
+            alert.showAndWait();
+        }
+    }
+    
     @FXML
     private void BorrowBook() {
         if (selectedBook != null) {
             System.out.println(selectedBook.getBookID());
             // If no book available
             if (selectedBook.getAvailBook() <= 0) {
-                showAlert("Error!!!","Borrow Book Failure!!!","This book is out of stock!!!");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error!!!");
-                alert.setHeaderText("Borrow Book Failure!!!");
-                alert.setContentText("This book is out of stock!!!");
-                alert.showAndWait();
+                showAlert("Error", "Borrow Book Failure", "This book is out of stock!!!");
                 return;
             } else {
                 Integer bookID = null;
@@ -1216,15 +1212,24 @@ public class FXMLDashBoardController implements Initializable {
                 String title = "";
                 title = selectedBook.getBookTitle();
                 Integer studentID = null;
-                try {
+                try {                    
                     studentID = Integer.valueOf(managerBook_studentID.getText());
                     Account studentAccount = AccountEntity.GetDataAccountById(studentID);
                     if(studentAccount == null) {
                         showAlert("Error!!!","Borrow Book Failure!!!","Incorrect student ID, please try again!!!");
+                        
                         return;
                     }
-                } catch (NumberFormatException ex) {                   
-                    showAlert("Error!!!","Borrow Book Failure!!!","Incorrect student ID, please try again!!!");
+                    if (account != null && "Librarian".equals(studentAccount.GetRole())) {
+                        showAlert("Error", "Borrow Book Failure", "Borrower must be a 'student'.");
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!!!");
+                    alert.setHeaderText("Borrow Book Failure!!!");
+                    alert.setContentText("Incorrect student ID, please try again!!!");
+                    alert.showAndWait();
                     return;
                 }
                 // - 1 book from number of available books
