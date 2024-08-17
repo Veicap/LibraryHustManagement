@@ -5,12 +5,9 @@
 package com.mycompany.libraryhustmanagerment;
 
 
-import com.mycompany.entities.AccountEntity;
 import com.mycompany.entities.BookEntity;
 import com.mycompany.entities.BorrowBookEntity;
 import com.mycompany.entities.CatalogEntity;
-import java.io.Console;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -20,11 +17,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 
 import java.io.IOException;
 
@@ -45,13 +39,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -60,7 +50,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import models.Account;
 import models.Book;
 import models.BorrowBook;
@@ -70,7 +59,7 @@ import models.BorrowBook;
  *
  * @author Legion
  */
-public class FXMLDashBoardController implements Initializable {
+public class FXMLDashBoardController {
     @FXML
     private TableView<Account> account_accountTableView;
 
@@ -350,38 +339,6 @@ public class FXMLDashBoardController implements Initializable {
     }
     // accountLogin
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-//        try {
-//            SetValueMangagetBookAll();
-//            SetValueBorrowBookAll();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        SetValueForBookTitlesCatalog();
-//        SetValueForBookGenreCatalog();
-//        SetValueForBookAuthorCatalog();
-//        account_accountIdColumn.setCellValueFactory(
-//                cellData -> new SimpleIntegerProperty(cellData.getValue().GetAccountId()).asObject());
-//        account_nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetName()));
-//        account_emailAddressColumn
-//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetEmailAddress()));
-//        account_phoneNumberColumn
-//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetPhoneNumber()));
-//        account_passwordColumn
-//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetPassword()));
-//        account_roleColumn
-//                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetRole()));
-//        ShowAllAccountsInTable();
-//        // UPdateCatalog borrowBook
-//        SetValueForBorrowIDSearch();
-//        SetValueForBookIDSearch();
-//        SetValueForAccountIDSearch();
-//        
-//        //accountLogin = FXMLDocumentController.GetAccountLogin();
-//        //System.out.println(accountLogin.GetRole());
-//       // System.out.println(userLogin.GetRole());
-    }
     public void initializeDataByStudent() {
         try {
             SetValueMangagetBookAll();
@@ -493,7 +450,6 @@ public class FXMLDashBoardController implements Initializable {
         SetValueForBookGenreCatalog();
         SetValueForBookAuthorCatalog();
     }
-
     // Set value for comboBox
     private void SetValueForComboBox(ComboBox<String> comboBox, List<String> catalogList, String model) {
         comboBox.getItems().clear();
@@ -504,7 +460,6 @@ public class FXMLDashBoardController implements Initializable {
         comboBox.getSelectionModel().select(model);
     }
 
-    // Set value for BookTitles combobox
     private void SetValueForBookTitlesCatalog() {
         List<String> titleCatalogList = CatalogEntity.GetBookTitleList();
         SetValueForComboBox(managerBook_bookTitleSearch, titleCatalogList, "Book Titles");
@@ -597,15 +552,7 @@ public class FXMLDashBoardController implements Initializable {
         managerBook_availableBookTable.setCellValueFactory(new PropertyValueFactory<>("availBook"));
         managerBook_tableView.setItems(bookDataList);
     }
-
-    /*
-     * Initialize selectedBook
-     */
     private Book selectedBook = null;
-
-    /*
-     * Initialize selectedBook
-     */
     @FXML
     private void SelectBook() {
         selectedBook = managerBook_tableView.getSelectionModel().getSelectedItem();
@@ -627,8 +574,6 @@ public class FXMLDashBoardController implements Initializable {
             managerBook_date.setValue(localDate);
         }
     }
-
-    // RESET FORM
     @FXML
     private void ResetForm() {
         managerBook_bookTitle.clear();
@@ -640,7 +585,6 @@ public class FXMLDashBoardController implements Initializable {
         selectedBook = null;
     }
 
-    // Update FORM
     @FXML
     private void UpdateBook() {
         if (selectedBook != null) {
@@ -654,6 +598,7 @@ public class FXMLDashBoardController implements Initializable {
                 String title = managerBook_bookTitle.getText();
                 String author = managerBook_author.getText();
                 Integer totalBook = Integer.valueOf(managerBook_stock.getText());
+                
                 String genre = managerBook_genre.getText();
                 String publisher = managerBook_publisherField.getText();
                 LocalDate pubLocalDate = managerBook_date.getValue();
@@ -700,6 +645,9 @@ public class FXMLDashBoardController implements Initializable {
                 Logger.getLogger(FXMLDashBoardController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        SetValueForBookTitlesCatalog();
+        SetValueForBookGenreCatalog();
+        SetValueForBookAuthorCatalog();
     }
 
     /*
@@ -1172,7 +1120,6 @@ public class FXMLDashBoardController implements Initializable {
         setValueForBorrowBookTableView(BorrowBookEntity.GetDataBorrowSearch(borrowID, bookID, accountID));
         
     }
-    
     @FXML
     private void ShowStudentInforDetail() throws SQLException {
         if (selectedBorrowBook != null) {
@@ -1196,8 +1143,7 @@ public class FXMLDashBoardController implements Initializable {
             alert.getDialogPane().setContent(content);
             alert.showAndWait();
         }
-    }
-    
+    } 
     @FXML
     private void BorrowBook() {
         if (selectedBook != null) {
@@ -1254,7 +1200,6 @@ public class FXMLDashBoardController implements Initializable {
             }
         }
     }
-
     @FXML
     private void ReturnBook() {
         if (selectedBorrowBook != null) {

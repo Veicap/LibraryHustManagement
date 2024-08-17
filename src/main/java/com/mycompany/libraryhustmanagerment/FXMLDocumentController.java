@@ -88,6 +88,9 @@ public class FXMLDocumentController implements Initializable {
 
     private double xOffset = 0;
     private double yOffset = 0;
+    @FXML
+    private double x = 0;
+    private double y = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -114,28 +117,20 @@ public class FXMLDocumentController implements Initializable {
     private void signIn_close() {
         System.exit(0);
     }
-
     @FXML
     private void signIn_minimize() {
         Stage stage = (Stage) signIn_form.getScene().getWindow();
         stage.setIconified(true);
     }
-
     @FXML
     private void signUp_close() {
         System.exit(0);
     }
-
     @FXML
     private void signUp_minimize() {
         Stage stage = (Stage) signup_form.getScene().getWindow();
         stage.setIconified(true);
     }
-
-    @FXML
-    private double x = 0;
-    private double y = 0;
-
     private void setupWindowDragging() {
         rootPane.setOnMousePressed((MouseEvent event) -> {
             xOffset = event.getSceneX();
@@ -148,7 +143,6 @@ public class FXMLDocumentController implements Initializable {
             stage.setY(event.getScreenY() - yOffset);
         });
     }
-
     private void switchToDashBoard(Account userLogin) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
         Parent root = loader.load();
@@ -182,7 +176,6 @@ public class FXMLDocumentController implements Initializable {
         signinbtn.getScene().getWindow().hide();
         
     }
-
     private void errorLogin() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error!");
@@ -190,7 +183,6 @@ public class FXMLDocumentController implements Initializable {
         alert.setContentText("Account ID and password are incorrect, please check again!");
         alert.showAndWait();
     }
-
     private void showAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -198,7 +190,6 @@ public class FXMLDocumentController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
     private Account userLogin = null;
     private static Account accountLogin = null;
     public static void SetAccountLogin(Account userLogin) {
@@ -219,8 +210,7 @@ public class FXMLDocumentController implements Initializable {
             showAlert("Error!", "Cannot Register!",
                     "Account ID must be HUST ID, please try again!");
         }
-    }
-    
+    }   
     private void handleSignIn() throws IOException {
         String accountIdText = signin_accountId.getText();
         String passwordText = signin_password.getText();
@@ -244,7 +234,6 @@ public class FXMLDocumentController implements Initializable {
         }
         
     }
-    
     private void handleSignUp() {
         String name = signup_name.getText();
         String phoneNumber = signup_phoneNumber.getText();
@@ -301,12 +290,10 @@ public class FXMLDocumentController implements Initializable {
             showAlert("Error!", "Cannot Register!", e.getMessage());
         }
     }
-
     private void clearSignInField() {
         signin_accountId.clear();
         signin_password.clear();
     }
-
     private void clearSignUpField() {
         signup_accountId.clear();
         signup_name.clear();

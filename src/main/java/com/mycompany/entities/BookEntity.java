@@ -43,61 +43,6 @@ public class BookEntity extends BaseEntity {
             close();
         }
     }
-    public static boolean IsExisted(Book newBook) {
-        open();
-        ResultSet resultSet = null;
-        try {
-
-            String query = "SELECT COUNT(*) FROM book WHERE title = ? AND author = ? AND genre = ? AND publisher = ? AND publicationDate = ?";
-            statement = conn.prepareStatement(query);
-            statement.setString(1, newBook.getBookTitle());
-            statement.setString(2, newBook.getBookAuthor());
-            statement.setString(3, newBook.getGenre());
-            statement.setString(4, newBook.getPublisher());
-            statement.setDate(5,new Date(newBook.getPublicationDate().getTime()));
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int count = resultSet.getInt(1);
-                return count > 0;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            // Đóng kết nối và tài nguyên
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, e);
-            }
-        }
-        return false;
-    }
-    // Get All Data of Book
-    public static ObservableList<Book> GetDataBooks() throws SQLException {
-        open();
-        List<Book> bookList = new Vector<>();
-        try (Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM book")) {
-            while (rs.next()) {
-                Book book = new Book();
-                book.setBookTitle(rs.getString("title"));
-                book.setBookID(rs.getInt("bookID"));
-                book.setBookAuthor(rs.getString("author"));
-                book.setGenre(rs.getString("genre"));
-                book.setPublisher(rs.getString("publisher"));
-                book.setPublicationDate(rs.getDate("publicationDate"));
-                book.setTotalBook(rs.getInt("totalBook"));
-                book.setAvailBook(rs.getInt("availLeft"));
-                bookList.add(book);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ObservableList<Book> bookDataList = FXCollections.observableList(bookList);
-        return bookDataList;
-    }
 
     public static void UpdateBook(Book updateBook, Book currentBook) {
         open();
@@ -140,7 +85,62 @@ public class BookEntity extends BaseEntity {
             close();
         }
     }
+    
+    public static boolean IsExisted(Book newBook) {
+        open();
+        ResultSet resultSet = null;
+        try {
 
+            String query = "SELECT COUNT(*) FROM book WHERE title = ? AND author = ? AND genre = ? AND publisher = ? AND publicationDate = ?";
+            statement = conn.prepareStatement(query);
+            statement.setString(1, newBook.getBookTitle());
+            statement.setString(2, newBook.getBookAuthor());
+            statement.setString(3, newBook.getGenre());
+            statement.setString(4, newBook.getPublisher());
+            statement.setDate(5,new Date(newBook.getPublicationDate().getTime()));
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đóng kết nối và tài nguyên
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return false;
+    }
+    
+    public static ObservableList<Book> GetDataBooks() throws SQLException {
+        open();
+        List<Book> bookList = new Vector<>();
+        try (Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM book")) {
+            while (rs.next()) {
+                Book book = new Book();
+                book.setBookTitle(rs.getString("title"));
+                book.setBookID(rs.getInt("bookID"));
+                book.setBookAuthor(rs.getString("author"));
+                book.setGenre(rs.getString("genre"));
+                book.setPublisher(rs.getString("publisher"));
+                book.setPublicationDate(rs.getDate("publicationDate"));
+                book.setTotalBook(rs.getInt("totalBook"));
+                book.setAvailBook(rs.getInt("availLeft"));
+                bookList.add(book);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BookEntity.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ObservableList<Book> bookDataList = FXCollections.observableList(bookList);
+        return bookDataList;
+    }
     public static ObservableList<Book> GetDataBookByTitle(String title) {
         open();
         List<Book> bookList = new ArrayList<>();
@@ -376,8 +376,7 @@ public class BookEntity extends BaseEntity {
         // System.out.print("Hello");
         return dataBook;
     }
-
-    // Update number of available books after borrow
+    
     public static void UpdateBorrowAvailBook(Book book) {
         open();
 

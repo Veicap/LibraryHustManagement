@@ -3,10 +3,6 @@ package models;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Admin
- */
 public class Account {
     private Integer accountId;
     private String name;

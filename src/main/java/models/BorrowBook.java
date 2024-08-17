@@ -34,66 +34,50 @@ public class BorrowBook {
         dueDate = calendar.getTime();
         returnDate = null;
     }
-
     public BorrowBook() {
     }
-
     public Integer getBorrowID() {
         return borrowID;
     }
-
     public void setBorrowID(Integer borrowID) {
         this.borrowID = borrowID;
     }
-
     public Integer getBookID() {
         return bookID;
     }
-
     public void setBookID(Integer bookID) {
         this.bookID = bookID;
     }
-
     public Integer getAccountID() {
         return accountID;
     }
-
     public void setAccountID(Integer accountID) {
         this.accountID = accountID;
     }
-
     public Date getBorrowDate() {
         return borrowDate;
     }
-
     public void setBorrowDate(Date borrowDate) {
         this.borrowDate = borrowDate;
     }
-
     public Date getDueDate() {
         return dueDate;
     }
-
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-
     public Date getReturnDate() {
         return returnDate;
     }
-
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public void returnBook() {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
